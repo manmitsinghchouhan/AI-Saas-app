@@ -193,6 +193,8 @@ export const  removeImageObject  = async(req , res )=>{
 
     const{public_id} = await cloudinary.uploader.upload(image.path) 
 
+    // const prompt = `${object} including all shadows and reflections`;
+
     const imageUrl = cloudinary.url(public_id, {
         transformation:[{effect :`gen_remove:${object}`}],
         resource_type: 'image'
