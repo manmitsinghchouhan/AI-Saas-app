@@ -23,7 +23,14 @@ const BlogTitles = () => {
     try {
       setLoading(true)
       const prompt = `
-            Generate blog titles for the keyword "${input}" in the category of "${selectedCategory}".`
+      Generate EXACTLY 5 blog titles for the keyword "${input}" in the category "${selectedCategory}".
+      
+      Rules:
+      - Only return titles
+      - No explanations
+      - Each title max 10 words
+      - Format as a numbered list
+      `
 
 
 

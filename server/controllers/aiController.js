@@ -77,7 +77,7 @@ export const  generateBlogTitle = async(req , res )=>{
       model: "gemini-3-flash-preview",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
-      max_tokens: 900,
+      max_tokens: 700,
     });
 
     const content = response.choices?.[0]?.message?.content || "";
@@ -239,13 +239,37 @@ export const resumeReview = async (req, res) => {
         const pdfData = await pdf(dataBuffer);
         // -----------------------
 
-        const prompt = `Review the following resume and provide constructive feedback. Resume Content:\n\n ${pdfData.text}`;
+        const prompt = `
+        You are a professional resume reviewer.
+        
+        Analyze the resume below and provide clear, structured feedback.
+        
+        Resume:
+        ${pdfData.text.slice(0, 3000)}
+        
+        Instructions:
+        - Keep the response concise,short but complete
+        - Use clear sections with headings
+        - Do NOT cut mid-sentence
+        
+        Format:
+        
+        1.Overall Feedback (2-3 lines summary)
+        2.Strengths (2 bullet points)
+        2.Weaknesses (2 bullet points)
+        4.Improvements (3-4 bullet points)
+        5.Final Verdict (short and professional)
+        
+        Important:
+        - Keep total response under 400-500 words
+        - Do NOT generate overly long explanations
+    `
 
         const response = await AI.chat.completions.create({
             model: "gemini-3-flash-preview",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.7,
-            max_tokens: 1000,
+            max_tokens: 1200,
         });
 
         const content = response.choices[0].message.content;
